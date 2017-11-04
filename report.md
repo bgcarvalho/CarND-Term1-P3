@@ -57,7 +57,7 @@ in width and height. For dense layers is done the opposite, decreasing size
 towards the last layer.
 
 Keras utilities are used to crop, normalize and center pixels (lines 142-145). 
-By doing this inside model layers, there no need to make any change 
+By doing this within model layers, there no need to make any change 
 in `drive.py`.
 
 |Layer (type)               | Output Shape            | Param #  |
@@ -82,11 +82,14 @@ Trainable params: *288,745*
 
 Non-trainable params: *0*
 
-For training was chosen to use 80% of samples, the 20% left for validation
+For training it was chosen to use 80% of samples, 20% for validation
 (line 119).
 The optimizer is Adam with learning rate of 0.0007, a little lower than its
 default value of 0.001. Running the generator for 10 epochs showed to be
 enough (loss decreasing for both train and validation).
+Loss function is mean squared error (line 186).
+
+![Training history](./images/history.png)
 
 The training data was recorded in distinct sessions, evaluating the model each
 time, so it has generated 8 zip files (around 450MB). These recording sessions contain:
@@ -100,9 +103,13 @@ the center of the road
 So with this dataset we build an implicit constrain that the car should not
 go off the road.
 
-|-|-|
-|![Crossing bridge - Center image](images/center_2017_10_26_22_00_37_383.jpg)|![Driving clockwise - Right image](images/right_2017_11_02_23_32_18_506.jpg)|
+Below on the left, car crossing bridge (example of center image) and on the 
+right car driving clockwise (right image).
 
+![Crossing bridge - Center image](images/center_2017_10_26_22_00_37_383.jpg)
+![Driving clockwise - Right image](images/right_2017_11_02_23_32_18_506.jpg)
+
+Simulator driving autonomously communicating with model through socket.
 
 ![Driving autonomously](images/autonomous1.png)
 

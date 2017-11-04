@@ -1,5 +1,6 @@
 # CarND-Term1-P3
-Behaviorial Cloning Project
+
+## Behaviorial Cloning Project
 
 Final report is [here](./report.md).
 

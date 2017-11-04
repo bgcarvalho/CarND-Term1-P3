@@ -19,8 +19,7 @@ training_files = 8
 c = ['center', 'left', 'right', 'steer', 'throttle', 'break', 'speed']
 samples = np.empty((0, 4))
 nlabels = 0
-#for s in range(1, training_files):
-for s in [1]:
+for s in range(1, training_files):
 
     # read CSV file with steering angle
     file = "./data/driving_0" + str(s) + ".csv"
@@ -192,7 +191,7 @@ history = model.fit_generator(train_generator,
                               steps_per_epoch=len(train_samples) / 320,
                               validation_data=validation_generator,
                               validation_steps=len(validation_samples) / 320,
-                              epochs=1,
+                              epochs=10,
                               verbose=1,
                               callbacks=cb)
 # save to disk
