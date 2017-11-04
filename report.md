@@ -100,9 +100,8 @@ the center of the road
 So with this dataset we build an implicit constrain that the car should not
 go off the road.
 
-| | |
 |-|-|
-|![Crossing bridge - Center image](images/center_2017_10_26_22_00_37_383.png)|![Driving clockwise - Right image](images/right_2017_11_02_23_32_18_506.png)|
+|![Crossing bridge - Center image](images/center_2017_10_26_22_00_37_383.jpg)|![Driving clockwise - Right image](images/right_2017_11_02_23_32_18_506.jpg)|
 
 
 ![Driving autonomously](images/autonomous1.png)
@@ -114,7 +113,9 @@ steering (lines 105-106).
 ### Simulation
 
 The results can be tested with the car driving autonomously around track one.
-Images were captured and created a [video file](./video.mp4).
+Images were captured and created a [video file (MP4)](./video.mp4).
+
+When driving autonomously the PI Controller keeps speed close to 9.
 
 
 ### Discussions
