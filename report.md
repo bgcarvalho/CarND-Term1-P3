@@ -56,7 +56,7 @@ nets, increasing the number of filters for the deeper layers as they reduce
 in width and height. For dense layers is done the opposite, decreasing size
 towards the last layer.
 
-Keras utilities are used to crop, normalize and center pixels (lines 142-145). 
+Keras utilities are used to crop, normalize and center pixels (lines 140-144). 
 By doing this within model layers, there no need to make any change 
 in `drive.py`.
 
@@ -71,34 +71,38 @@ in `drive.py`.
 |conv2d_5 (Conv2D)          |(None, 1, 31, 72)        | 38952    |
 |dropout_1 (Dropout)        |(None, 1, 31, 72)        | 0        |
 |flatten_1 (Flatten)        |(None, 2232)             | 0        |
-|dense_1 (Dense)            |(None, 48)               | 107184   |
-|dense_2 (Dense)            |(None, 32)               | 1568     |
-|dense_3 (Dense)            |(None, 16)               | 528      |
-|steer_angle (Dense)        |(None, 1)                | 17       |
+|dense_1 (Dense)            |(None, 48)               | 160776   |
+|dense_2 (Dense)            |(None, 32)               | 4380     |
+|dense_3 (Dense)            |(None, 16)               | 2928     |
+|steer_angle (Dense)        |(None, 1)                | 49       |
 
-Total params: *288,745*
+Total params: *347,581*
 
-Trainable params: *288,745*
+Trainable params: *347,581*
 
 Non-trainable params: *0*
 
 For training it was chosen to use 80% of samples, 20% for validation
-(line 119).
-The optimizer is Adam with learning rate of 0.0007, a little lower than its
-default value of 0.001. Running the generator for 10 epochs showed to be
+(line 118).
+The optimizer is Adam with learning rate of 0.001, with decay of 1e-4. 
+Running the generator for 10 epochs showed to be
 enough (loss decreasing for both train and validation).
 Loss function is mean squared error (line 186).
+The ealy stop callback was set to 1e-3, patience=2 (line 178 and 196).
+This callback did fire in epoch 00007.
 
 ![Training history](./images/history.png)
 
 The training data was recorded in distinct sessions, evaluating the model each
-time, so it has generated 8 zip files (around 450MB). These recording sessions contain:
+time, so it has generated 15 zip files (around 550MB). 
+These recording sessions contain:
 
 - about 2 full laps driving with the car in the center of the road
 - 1 lap driving in zig-zag, exposing the model to "new" images
 - recovering training in corners, driving the car from the edges in direction
 the center of the road
 - 1 full lap driving clockwise (reverse from default)
+- focus on corners
 
 So with this dataset we build an implicit constrain that the car should not
 go off the road.
