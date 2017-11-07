@@ -19,10 +19,10 @@ training_files = 8
 c = ['center', 'left', 'right', 'steer', 'throttle', 'break', 'speed']
 samples = np.empty((0, 4))
 nlabels = 0
-for s in range(1, training_files):
-
+#for s in range(1, training_files):
+for s in [3, 4, 6, 7, 8, 9, 11, 12, 13, 14, 15]:
     # read CSV file with steering angle
-    file = "./data/driving_0" + str(s) + ".csv"
+    file = "./data/driving_{:0>2d}.csv".format(s)
     csvdata = pd.read_csv(file, header=None, names=c)
 
     # remove too low speed == car almost stopped
@@ -30,7 +30,7 @@ for s in range(1, training_files):
 
     nl = csvdata.shape[0]
     nlabels += nl
-    n_ = np.vectorize(lambda x: 'driving_0' + str(s))
+    n_ = np.vectorize(lambda x: 'driving_{:0>2d}'.format(s))
 
     # temporary var
     tmp = csvdata.iloc[:, [0, 3]].values
@@ -157,9 +157,9 @@ model.add(Dropout(0.5))
 model.add(Flatten())
 
 # dense layers
+model.add(Dense(72, activation='relu'))
+model.add(Dense(60, activation='relu'))
 model.add(Dense(48, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(16, activation='relu'))
 
 # final layer named "steer_angle", so it can be used elsewhere (transfer)
 model.add(Dense(1, name='steer_angle'))
@@ -175,12 +175,12 @@ print(model.summary())
 # TRAINING
 # =============================================================
 
-# cb_earlystop = EarlyStopping(min_delta=1e-3, patience=3, verbose=1)
-# cb = [cb_earlystop]
-cb = []
+cb_earlystop = EarlyStopping(min_delta=1e-3, patience=2, verbose=1)
+cb = [cb_earlystop]
+#cb = []
 
 # learning rate
-opt = optimizers.Adam(lr=0.0007)
+opt = optimizers.Adam(lr=0.001, decay=1e-4)
 
 # compile model
 model.compile(loss='mse', optimizer=opt)
@@ -195,12 +195,16 @@ history = model.fit_generator(train_generator,
                               verbose=1,
                               callbacks=cb)
 # save to disk
-#model.save('model.h5')
+model.save('model.h5')
 
+print('')
+print('model.h5 saved')
+print('')
 
+show_hist = True
 
-
-
+if show_hist:
+    print(history.history)
 
 
 show_plots = False
